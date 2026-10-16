@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 
 export function SetupPage() {
-  const { user, refreshBusiness } = useAuth();
+  const { user, refreshBusiness, signOut } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -50,6 +50,11 @@ export function SetupPage() {
     navigate('/dashboard');
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/signin');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
       <div className="w-full max-w-md">
@@ -61,6 +66,17 @@ export function SetupPage() {
           <p className="mt-1 text-sm text-gray-500">
             Tell us about your business to get started
           </p>
+        </div>
+
+      <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-bold text-gray-900">Set up your shop</h1>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="text-sm text-gray-600 hover:text-gray-900 underline"
+          >
+            Logout
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="card p-6 space-y-4">

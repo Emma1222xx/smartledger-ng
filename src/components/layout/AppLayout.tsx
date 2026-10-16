@@ -31,7 +31,7 @@ const NAV = [
 ];
 
 export function AppLayout() {
-  const { business, signOut } = useAuth();
+  const { business, signOut, user } = useAuth();
   const navigate = useNavigate();
   const isOnline = useOnlineStatus();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);

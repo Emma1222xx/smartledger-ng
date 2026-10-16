@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
 export function ProtectedRoute() {
-  const { session, business, loading } = useAuth();
+  const { session, business, loading, user } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -14,6 +14,11 @@ export function ProtectedRoute() {
   }
 
   if (!session) return <Navigate to="/signin" replace />;
+
+  // If user has no email confirmed, force them to verify before accessing setup
+  if (user && !user.email_confirmed_at && location.pathname !== '/signup') {
+    return <Navigate to="/signup" replace />;
+  }
 
   if (!business && location.pathname !== '/setup') {
     return <Navigate to="/setup" replace />;
