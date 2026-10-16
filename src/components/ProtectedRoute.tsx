@@ -1,8 +1,9 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
 export function ProtectedRoute() {
-  const { session, loading } = useAuth();
+  const { session, business, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -13,6 +14,10 @@ export function ProtectedRoute() {
   }
 
   if (!session) return <Navigate to="/signin" replace />;
+
+  if (!business && location.pathname !== '/setup') {
+    return <Navigate to="/setup" replace />;
+  }
 
   return <Outlet />;
 }
