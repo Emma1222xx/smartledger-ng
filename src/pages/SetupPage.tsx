@@ -23,7 +23,7 @@ export function SetupPage() {
 
     setLoading(true);
 
-    const { data: business, error: bizError } = await supabase
+    const { data, error: setupError } = await supabase
       .from('businesses')
       .insert({
         name: trimmedName,
@@ -33,7 +33,9 @@ export function SetupPage() {
       .select()
       .single();
 
-    if (bizError) { setError(bizError.message); setLoading(false); return; }
+    if (setupError) { setError(setupError.message); setLoading(false); return; }
+
+    const business = data;
 
     const { error: memError } = await supabase.from('memberships').insert({
       business_id: business.id,

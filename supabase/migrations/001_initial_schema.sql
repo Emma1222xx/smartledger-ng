@@ -198,6 +198,43 @@ as $$
 $$;
 
 -- ============================================================
+-- HELPER: create business and membership for current user
+-- Used during onboarding to set up a new shop
+-- ============================================================
+create or replace function create_shop(
+  p_name text,
+  p_phone text,
+  p_address text
+)
+returns table (
+  business_id uuid,
+  membership_id uuid
+)
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_business_id uuid;
+  v_membership_id uuid;
+begin
+  -- Create business
+  insert into businesses (name, phone, address)
+  values (p_name, p_phone, p_address)
+  returning id into v_business_id;
+
+  -- Create membership for current user
+  insert into memberships (business_id, user_id, role)
+  values (v_business_id, auth.uid(), 'owner')
+  returning id into v_membership_id;
+
+  -- Return both IDs
+  return query
+  select v_business_id, v_membership_id;
+end;
+$$;
+
+-- ============================================================
 -- SALE CREATION FUNCTION (transactional: sale + stock deduction)
 -- Prevents double-deduction on retries if the sale id already exists.
 -- ============================================================
@@ -374,17 +411,19 @@ create policy "members can update own business"
   using (id = my_business_id())
   with check (id = my_business_id());
 
-create policy "authenticated users can create a business"
+create policy "allow authenticated insert businesses"
   on businesses for insert
-  with check (auth.role() = 'authenticated');
+  to authenticated
+  with check (true);
 
 -- Memberships: owner can read; insert handled by create_business flow
 create policy "members can read own memberships"
   on memberships for select
   using (business_id = my_business_id());
 
-create policy "authenticated can insert membership for own user"
+create policy "allow authenticated insert memberships"
   on memberships for insert
+  to authenticated
   with check (user_id = auth.uid());
 
 -- Products
