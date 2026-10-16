@@ -58,17 +58,7 @@ export function SetupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="mx-auto w-12 h-12 bg-brand-600 rounded-xl flex items-center justify-center mb-4">
-            <span className="text-white font-bold text-lg">SL</span>
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900">Set up your shop</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Tell us about your business to get started
-          </p>
-        </div>
-
-      <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold text-gray-900">Set up your shop</h1>
           <button
             type="button"
