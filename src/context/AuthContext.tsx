@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } else {
       setBusiness(null);
     }
-  }, []);
+  }, [supabase]);
 
   const refreshBusiness = useCallback(async () => {
     if (user) await fetchBusiness(user.id);

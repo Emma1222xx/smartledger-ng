@@ -129,6 +129,22 @@ export function DashboardPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
+      {/* Business welcome panel after setup */}
+      <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 rounded-lg p-4 mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+            <span className="text-white text-sm font-bold">✓</span>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-green-900">
+              🎉 Shop "{business.name}" is ready! You're all set to start selling.
+            </p>
+            <p className="text-xs text-green-700 mt-1">
+              Complete your first sale using the Cashier page or explore your dashboard.
+            </p>
+          </div>
+        </div>
+      </div>
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
@@ -170,6 +186,25 @@ export function DashboardPage() {
 
       {loading && <LoadingState />}
       {error && <ErrorState message={error} onRetry={load} />}
+
+      {/* Welcome panel shown after shop setup */}
+      {metrics && !loading && !error && (
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-bold">✓</span>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-green-900">
+                🎉 Shop "{business.name}" is ready! You're all set to start selling.
+              </p>
+              <p className="text-xs text-green-700 mt-1">
+                Complete your first sale using the Cashier page or explore your dashboard.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {metrics && !loading && (
         <>
